@@ -12,8 +12,11 @@ def parseLine(line):
 
 lines = sc.textFile("file:///C:/Users/venka_000/Documents/SparkCourse/1800.csv")
 parsedLines = lines.map(parseLine)
+#excludes all the rows without TMIN
 minTemps = parsedLines.filter(lambda x: "TMIN" in x[1])
+#removing the column x[1]
 stationTemps = minTemps.map(lambda x: (x[0], x[2]))
+#finding min by key
 minTemps = stationTemps.reduceByKey(lambda x, y: min(x,y))
 results = minTemps.collect();
 
